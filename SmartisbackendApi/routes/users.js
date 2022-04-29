@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const { TableServiceClient, AzureNamedKeyCredential } = require("@azure/data-tables");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -16,6 +17,34 @@ router.get('/', function(req, res, next) {
   res.json({
     data: dataArry
   });
+
+
+  const account = "smartisapp";
+const accountKey = "i09wa/MHV425XvSyrqPNzXX36XESXwW8LeBPbxfwdppwHmuvbs04a0xR4IVy7wuenNcFegwMBe4PR66TMiRgrA==";
+
+const credential = new AzureNamedKeyCredential(account, accountKey);
+const serviceClient = new TableServiceClient(
+  `https://smartisapp.table.core.windows.net/`,
+  credential
+);
+
+async function main() {
+  console.log("hi there")
+  let tablesIter = serviceClient.listTables();
+  let i = 1;
+  for await (const table of tablesIter) {
+    console.log(`Table${i}: ${table.name}`);
+    i++;
+    // Output:
+    // Table1: testTable1
+    // Table1: testTable2
+    // Table1: testTable3
+    // Table1: testTable4
+    // Table1: testTable5
+  }
+}
+
+main();
 });
 
 module.exports = router;
