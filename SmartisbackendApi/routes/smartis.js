@@ -1,6 +1,7 @@
-var express = require("express");
+const express = require("express");
+const { v4: uuuidv4 } = require("uuid");
 
-var router = express.Router();
+const router = express.Router();
 const {
   TableServiceClient,
   TableClient,
@@ -27,16 +28,15 @@ router.get("/smartis", async function (req, res, next) {
   });
 });
 
-async function showEntities() {
-  let entitiesIter = client.listEntities();
-  let entities = [];
-  for await (const entity of entitiesIter) {
-    entities.push(entity);
-  }
-  return entities;
-}
+router.get("/smartis/:id", async function (req, res, next) {
+  res.json({
+    data: await showUserEntities(req.params.id),
+  });
+});
 
-router.post("/create", async function (req, res, next) {});
+router.post("/create", async function (req, res, next) {
+  createEntity(req.body.to, req.body.from, req.body.message, req.body.used);
+});
 
 /* GET users listing. */
 router.get("/tables", async function (req, res, next) {
@@ -56,4 +56,34 @@ async function getTables() {
   return tables;
 }
 
+async function showEntities() {
+  let entitiesIter = client.listEntities();
+  let entities = [];
+  for await (const entity of entitiesIter) {
+    entities.push(entity);
+  }
+  return entities;
+}
+
+async function showUserEntities(from) {
+  let entitiesIter = client.listEntities();
+  let entities = [];
+  for await (const entity of entitiesIter) {
+    if (entity.partitionKey === from) {
+      entities.push(entity);
+    }
+  }
+  return entities;
+}
+
+async function createEntity(from, to, message, used) {
+  const testEntity = {
+    partitionKey: from,
+    rowKey: uuuidv4(),
+    message: message,
+    used: used,
+    from: to,
+  };
+  await client.createEntity(testEntity);
+}
 module.exports = router;
