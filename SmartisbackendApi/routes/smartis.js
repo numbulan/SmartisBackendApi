@@ -35,7 +35,7 @@ router.get("/smartis/:id", async function (req, res, next) {
 });
 
 router.post("/create", async function (req, res, next) {
-  createEntity(req.body.to, req.body.from, req.body.message, req.body.used);
+  createEntity(req.body.to, req.body.from, req.body.message);
 });
 
 /* GET users listing. */
@@ -76,12 +76,12 @@ async function showUserEntities(from) {
   return entities;
 }
 
-async function createEntity(from, to, message, used) {
+async function createEntity(from, to, message) {
   const testEntity = {
     partitionKey: from,
     rowKey: uuuidv4(),
     message: message,
-    used: used,
+    used: false,
     from: to,
   };
   await client.createEntity(testEntity);
