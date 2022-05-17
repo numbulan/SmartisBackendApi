@@ -35,7 +35,7 @@ router.get("/smartis/:id", async function (req, res, next) {
 });
 
 router.post("/create", async function (req, res, next) {
-  createEntity(req.body.to, req.body.from, req.body.message);
+  createEntity(req.body.from, req.body.to, req.body.message);
 });
 
 /* GET users listing. */
