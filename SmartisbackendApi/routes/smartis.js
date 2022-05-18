@@ -78,11 +78,11 @@ async function showUserEntities(from) {
 
 async function createEntity(from, to, message) {
   const testEntity = {
-    partitionKey: from,
+    partitionKey: to,
     rowKey: uuuidv4(),
     message: message,
     used: false,
-    from: to,
+    from: from,
   };
   await client.createEntity(testEntity);
 }
