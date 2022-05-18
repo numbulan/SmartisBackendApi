@@ -15,7 +15,7 @@ const smartisRouter = require("./routes/smartis");
 
 var app = express();
 
-app.use(cors({ origin: "http://localhost:3001" }));
+app.use(cors({ origin: "https://smartiscounterfrontend.azurewebsites.net" }));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
