@@ -18,6 +18,7 @@ var app = express();
 app.use(cors({ origin: "https://gray-ocean-0a735c403.1.azurestaticapps.net" }));
 //app.use(cors({ origin: "http://localhost:3001" }));
 
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
