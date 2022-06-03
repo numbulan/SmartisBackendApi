@@ -69,7 +69,7 @@ async function showUserEntities(from) {
   let entitiesIter = client.listEntities();
   let entities = [];
   for await (const entity of entitiesIter) {
-    if (entity.partitionKey === from) {
+    if (entity.partitionKey.toLowerCase() === from.toLowerCase()) {
       entities.push(entity);
     }
   }
